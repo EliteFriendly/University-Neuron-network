@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="DiffEvolution">
+      <UniqueIdentifier>{5444fffc-2199-4b5b-b2a2-036002338e2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -24,6 +27,15 @@
     <ClCompile Include="Neuron.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="DiffEvolution.cpp">
+      <Filter>DiffEvolution</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffMutation.cpp">
+      <Filter>DiffEvolution</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualDiffEvolution.cpp">
+      <Filter>DiffEvolution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuronNetwork.h">
@@ -31,6 +43,15 @@
     </ClInclude>
     <ClInclude Include="Neuron.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffEvolution.h">
+      <Filter>DiffEvolution</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffMutation.h">
+      <Filter>DiffEvolution</Filter>
+    </ClInclude>
+    <ClInclude Include="IndividualDiffEvolution.h">
+      <Filter>DiffEvolution</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

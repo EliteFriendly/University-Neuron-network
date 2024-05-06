@@ -127,11 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DiffEvolution.cpp" />
+    <ClCompile Include="DiffMutation.cpp" />
+    <ClCompile Include="IndividualDiffEvolution.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="NeuronNetwork.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DiffEvolution.h" />
+    <ClInclude Include="DiffMutation.h" />
+    <ClInclude Include="IndividualDiffEvolution.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NeuronNetwork.h" />
   </ItemGroup>
