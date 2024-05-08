@@ -16,6 +16,9 @@
     <Filter Include="DiffEvolution">
       <UniqueIdentifier>{5444fffc-2199-4b5b-b2a2-036002338e2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GeneticAlgorithm">
+      <UniqueIdentifier>{db3fb146-2319-40a8-9e26-322c6468e607}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -36,6 +39,21 @@
     <ClCompile Include="IndividualDiffEvolution.cpp">
       <Filter>DiffEvolution</Filter>
     </ClCompile>
+    <ClCompile Include="..\Переписывание ГА\Crossover.cpp">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Переписывание ГА\Individual.cpp">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Переписывание ГА\Selection.cpp">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Переписывание ГА\Simple_GA.cpp">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Переписывание ГА\SurviveCrossover.cpp">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuronNetwork.h">
@@ -52,6 +70,24 @@
     </ClInclude>
     <ClInclude Include="IndividualDiffEvolution.h">
       <Filter>DiffEvolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Переписывание ГА\Crossover.h">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Переписывание ГА\Individual.h">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Переписывание ГА\Mutation.h">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Переписывание ГА\Selection.h">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Переписывание ГА\Simple_GA.h">
+      <Filter>GeneticAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Переписывание ГА\SurviveCrossover.h">
+      <Filter>GeneticAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

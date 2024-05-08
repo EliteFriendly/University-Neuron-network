@@ -19,7 +19,7 @@ vector<double> NeuronNetwork::matrixMulti(vector<Neuron> neuron, vector<double> 
 
 double NeuronNetwork::funcActivation(double x)
 {
-	return 1/(1+exp(pow(x,-1)));
+	return 1/(1+exp(-x));
 }
 
 double NeuronNetwork::getError(vector<double> w, vector<double> x, vector<double> y)
@@ -37,14 +37,42 @@ double NeuronNetwork::getError(vector<double> w, vector<double> x, vector<double
 	return sum;
 }
 
+void NeuronNetwork::setFuncActivation(vector<double> numbersFuncs)
+{
+	vector<function<double(double)>> allFuncActivation = {
+		[](double x) { return 0; } ,//1
+		[](double x) {return sin(x); },//2
+		[](double x) {if (x < -1) return -1.0; if (x > 1) return 1.0; else return x; },//3
+		[](double x) {return 2 / (1 + exp(x)) - 1; },//4
+		//5 пропущена
+		[](double x) {return exp(x); },//6
+		[](double x) {return abs(x); },//7
+		[](double x) {return 1 - exp(x); },//8
+		[](double x) {return x; },//9
+		[](double x) {return pow(x,2); },//10
+		[](double x) {return pow(x,3); },//11
+		[](double x) {return pow(x,-1); },//12
+		[](double x) {return 1; },//13
+		[](double x) {return 1 / (1 + exp(-1)); },//14
+		[](double x) {return exp(-(x * x) / 2); },//15
+		[](double x) {if (x < -1 / 2) return -1.0; if (x > 1 / 2) return 1.0; else return x + 1 / 2; },//16
+
+	};
+	//Замена функции активации первого слоя
+	for (int i = 0; i < layerCount; i++) {
+		for (int j = 0; j < neuronCount; j++) {
+			grid[i][j].replaceFuncActivation(allFuncActivation[int(numbersFuncs[i * layerCount + j])]);
+		}
+	}
+}
+
 void NeuronNetwork::changeW(vector<double> w)
 {
 	//Замена весовых коэффициентов первого слоя
 	vector<double> replace;
 	for (int i = 0; i < neuronCount; i++) {
 		replace = w;
-		replace.erase(replace.cbegin(), replace.cbegin() + i * (inCount + 1));//Удаление коэффициентов для первых нейронов
-		//replace.erase(replace.cbegin() + i * (inCount + 1) * 2, replace.cend());//Удаление остальной части
+		replace.erase(replace.cbegin(), replace.cbegin() + i * (inCount + 1));//Удаление значений не для первых нейронов
 		grid[0][i].changeW(replace);
 	}
 	vector<double> wWithoutFirstLayer = w;
@@ -63,6 +91,49 @@ void NeuronNetwork::changeW(vector<double> w)
 	wWithoutFirstLayer.erase(wWithoutFirstLayer.cbegin(), wWithoutFirstLayer.cend() - neuronCount-1);//Попытка подобраться к коэффициентам последнего слоя
 	outCoef = wWithoutFirstLayer;
 	
+}
+
+void NeuronNetwork::startTrainGA(vector<double> x, vector<double> y)
+{
+	//Создание функции которая будет обучать ДЭ и получать от туда ошибку нейронной сети
+	function<double(vector<double>)> error = [&](vector<double> numbersFuncActivation) {
+		setFuncActivation(numbersFuncActivation);
+		return startTrainDE(x, y);
+		};
+	//Задание ограничений
+	vector<double> limitsVarLR(neuronCount * layerCount*2);
+	for (int i = 0; i < limitsVarLR.size(); i++) {
+		if (i % 2 == 0) {
+			limitsVarLR[i] = 0;
+		}
+		else {
+			limitsVarLR[i] = 16;
+		}
+	}
+
+	//Обучение
+	Simple_GA train(error, limitsVarLR, neuronCount * layerCount, "min");
+	train.set_types("Tournament", "TwoPoint", "BestAndOffspring", "Average");
+	train.start(10, 10, 1);
+	//Получение наилучшей найденной комбинации функций для нейронной сети 
+	vector<double> numFunc = train.get_all();
+	setFuncActivation(numFunc);//Установка их и последующее сохранение
+	fstream file("Settings.txt");
+	for (int i = 0; i < numFunc.size(); i++) {
+		file << numFunc[i] << " ";
+	}
+	file << endl;
+	startTrainDE(x, y);
+	//Получение всех весовых коэффициентов в файл
+	for (int i = 0; i < layerCount; i++) {
+		for (int j = 0; j < neuronCount; j++) {
+			for (int w = 0; w < grid[i][j].getW().size(); w++) {
+				file << grid[i][j].getW()[w] << ' ';
+			}
+		}
+	}
+
+
 }
 
 NeuronNetwork::NeuronNetwork(int neuronCount, int layerCount, int inCount):layerCount(layerCount), neuronCount(neuronCount), inCount(inCount)
@@ -93,11 +164,12 @@ NeuronNetwork::NeuronNetwork(int neuronCount, int layerCount, int inCount):layer
 
 }
 
-void NeuronNetwork::startTrain(vector<double> x, vector<double> y)
+double NeuronNetwork::startTrainDE(vector<double> x, vector<double> y)
 {
 	function<double(vector<double>)> error = [&](vector<double> w) {return getError(w, x, y); };
 
-	vector<double> limits((neuronCount * (inCount + 1) + (layerCount - 1) * (neuronCount + 1)*neuronCount+ (neuronCount + 1))*2);//Границы параметров, включая ВЫХОДНЫЕ коэфф
+	//Границы параметров, включая ВЫХОДНЫЕ коэфф
+	vector<double> limits((neuronCount * (inCount + 1) + (layerCount - 1) * (neuronCount + 1)*neuronCount+ (neuronCount + 1))*2);
 	for (int i = 0; i < limits.size(); i++) {
 		if (i % 2 == 0) {
 			limits[i] = -10;
@@ -108,8 +180,9 @@ void NeuronNetwork::startTrain(vector<double> x, vector<double> y)
 	}
 
 	DiffEvolution train(error, limits, "best1", "min");
-	train.startSearch(0.01, 0.5, 0.5, 50, 50);
+	train.startSearch(0.01, 0.5, 0.5, 20, 50);
 	changeW(train.getBestCoordinates());
+	return train.getError();//Возвращает ошибку для работы ГА
 }
 
 double NeuronNetwork::getValue(vector<double> in)

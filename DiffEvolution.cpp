@@ -52,7 +52,6 @@ void DiffEvolution::startSearch(double acc, double F, double Cr, int N, int gene
 	mutation.setF(F);//”становака дл€ корректной работы мутации
 
 	arrIndividuals.resize(N);
-	//std::sort(arrIndividuals.begin(), arrIndividuals.end());
 	//√енераци€ первой попул€ции
 	for (int i = 0; i < N; i++) {
 		IndividualDiffEvolution ind(limitsDimension, func, acc, aim);
@@ -72,9 +71,5 @@ void DiffEvolution::startSearch(double acc, double F, double Cr, int N, int gene
 		saveBest();
 	}
 	
-	/*for (int i = 0; i < (limitsDimension.size() / 2); i++) {
-		cout << "x =" << best.getCoordinats()[i] << endl;
-	}
-	cout << func(best.getCoordinats());*/
 
 }

@@ -41,8 +41,12 @@ void main() {
 
 	//Начало
 	vector<double> xOne(1);
-	xOne[0] = xTest[0];
+	
 	NeuronNetwork proba(3, 3, 1);
-	proba.startTrain(xTrain, yTrain);
-	cout<<proba.getValue(xOne)<<" "<<yTest[0];
+	proba.startTrainGA(xTrain, yTrain);
+	for (int i = 0; i < 25; i++) {
+		xOne[0] = xTest[i];
+		cout << proba.getValue(xOne) << " " << yTest[0] << endl;
+	}
+	
 }

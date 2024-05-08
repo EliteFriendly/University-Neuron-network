@@ -127,6 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Переписывание ГА\Crossover.cpp" />
+    <ClCompile Include="..\Переписывание ГА\Individual.cpp" />
+    <ClCompile Include="..\Переписывание ГА\Selection.cpp" />
+    <ClCompile Include="..\Переписывание ГА\Simple_GA.cpp" />
+    <ClCompile Include="..\Переписывание ГА\SurviveCrossover.cpp" />
     <ClCompile Include="DiffEvolution.cpp" />
     <ClCompile Include="DiffMutation.cpp" />
     <ClCompile Include="IndividualDiffEvolution.cpp" />
@@ -135,6 +140,12 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Переписывание ГА\Crossover.h" />
+    <ClInclude Include="..\Переписывание ГА\Individual.h" />
+    <ClInclude Include="..\Переписывание ГА\Mutation.h" />
+    <ClInclude Include="..\Переписывание ГА\Selection.h" />
+    <ClInclude Include="..\Переписывание ГА\Simple_GA.h" />
+    <ClInclude Include="..\Переписывание ГА\SurviveCrossover.h" />
     <ClInclude Include="DiffEvolution.h" />
     <ClInclude Include="DiffMutation.h" />
     <ClInclude Include="IndividualDiffEvolution.h" />

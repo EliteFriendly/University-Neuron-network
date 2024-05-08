@@ -17,8 +17,8 @@ public:
 
 	double useFuncActivation(double x) { return funcActivation(x); }
 
-	void changeFuncActivation(function<double(double)> funcIn) { funcActivation = funcIn; }
 	void changeW(vector<double> w);
+	void replaceFuncActivation(function<double(double)> funcActivationVoid) {funcActivation = funcActivationVoid;}
 	vector<double> getW();
 };
 
