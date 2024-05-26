@@ -26,7 +26,6 @@ double NeuronNetwork::getError(vector<double> w, vector<double> x, vector<double
 {
 	changeW(w);
 
-
 	double sum = 0;//Среднеквадратичная ошибка
 	vector<double> onlyX(1);//Сделано для того чтобы получить значение из getValue
 	for (int i = 0; i < x.size(); i++) {
@@ -55,7 +54,7 @@ void NeuronNetwork::setFuncActivation(vector<double> numbersFuncs)
 		[](double x) {return 1; },//13
 		[](double x) {return 1 / (1 + exp(-1)); },//14
 		[](double x) {return exp(-(x * x) / 2); },//15
-		[](double x) {if (x < -1 / 2) return -1.0; if (x > 1 / 2) return 1.0; else return x + 1 / 2; },//16
+		[](double x) {if (x < -1 / 2) return -1.0; if (x > 1 / 2) return 1.0; else return x + 1 / 2; }//16
 
 	};
 	//Замена функции активации первого слоя
@@ -107,18 +106,18 @@ void NeuronNetwork::startTrainGA(vector<double> x, vector<double> y)
 			limitsVarLR[i] = 0;
 		}
 		else {
-			limitsVarLR[i] = 16;
+			limitsVarLR[i] = 15;
 		}
 	}
 
 	//Обучение
 	Simple_GA train(error, limitsVarLR, neuronCount * layerCount, "min");
 	train.set_types("Tournament", "TwoPoint", "BestAndOffspring", "Average");
-	train.start(10, 10, 1);
+	train.start(50, 20, 1);
 	//Получение наилучшей найденной комбинации функций для нейронной сети 
 	vector<double> numFunc = train.get_all();
 	setFuncActivation(numFunc);//Установка их и последующее сохранение
-	fstream file("Settings.txt");
+	ofstream file("Settings.txt");
 	for (int i = 0; i < numFunc.size(); i++) {
 		file << numFunc[i] << " ";
 	}
@@ -180,7 +179,7 @@ double NeuronNetwork::startTrainDE(vector<double> x, vector<double> y)
 	}
 
 	DiffEvolution train(error, limits, "best1", "min");
-	train.startSearch(0.01, 0.5, 0.5, 20, 50);
+	train.startSearch(0.01, 0.5, 0.5, 30, 50);
 	changeW(train.getBestCoordinates());
 	return train.getError();//Возвращает ошибку для работы ГА
 }

@@ -6,6 +6,7 @@
 #include "DiffEvolution.h"
 #include "GeneticAlgorithm/Simple_GA.h"
 #include <fstream>
+#include <ctime>
 using namespace std;
 
 class NeuronNetwork
@@ -22,8 +23,9 @@ private:
 	double funcActivation(double);
 	double getError(vector<double> w, vector<double> x, vector<double> y);
 	void setFuncActivation(vector<double>);
-	double startTrainDE(vector<double> x, vector<double> y);
+	
 public:
+	double startTrainDE(vector<double> x, vector<double> y);
 	NeuronNetwork(int layerCount, int neuronCount,int inCount);
 	void changeW(vector<double> w);
 	void startTrainGA(vector<double> x, vector<double> y);

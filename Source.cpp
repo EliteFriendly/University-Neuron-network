@@ -5,8 +5,12 @@
 using namespace std;
 
 
+//double func(double x) {
+//	return -7 * sin(x) + 10 * exp(cos(x)) + 0.8 * x;
+//}
+
 double func(double x) {
-	return -7 * sin(x) + 10 * exp(cos(x)) + 0.8 * x;
+	return sin(x) + pow(x, 2) + 10;
 }
 
 
@@ -42,11 +46,12 @@ void main() {
 	//Начало
 	vector<double> xOne(1);
 	
-	NeuronNetwork proba(3, 3, 1);
+	NeuronNetwork proba(4, 4, 1);
+	//proba.startTrainDE(xTrain, yTrain);
 	proba.startTrainGA(xTrain, yTrain);
 	for (int i = 0; i < 25; i++) {
 		xOne[0] = xTest[i];
-		cout << proba.getValue(xOne) << " " << yTest[0] << endl;
+		cout << proba.getValue(xOne) << " " << yTest[i] << endl;
 	}
 	
 }
