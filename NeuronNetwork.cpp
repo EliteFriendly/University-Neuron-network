@@ -1,5 +1,6 @@
 #include "NeuronNetwork.h"
 
+
 vector<double> NeuronNetwork::matrixMulti(vector<Neuron> neuron, vector<double> inMatrix)
 {
 	vector<double> out(neuron.size());//Выходная матрица
@@ -50,9 +51,9 @@ void NeuronNetwork::setFuncActivation(vector<double> numbersFuncs)
 		[](double x) {return x; },//9
 		[](double x) {return pow(x,2); },//10
 		[](double x) {return pow(x,3); },//11
-		[](double x) {return pow(x,-1); },//12
+		[](double x) { if (x == 0) return 0.0; return pow(x,-1); },//12
 		[](double x) {return 1; },//13
-		[](double x) {return 1 / (1 + exp(-1)); },//14
+		[](double x) {return 1 / (1 + exp(-x)); },//14
 		[](double x) {return exp(-(x * x) / 2); },//15
 		[](double x) {if (x < -1 / 2) return -1.0; if (x > 1 / 2) return 1.0; else return x + 1 / 2; }//16
 
@@ -106,14 +107,14 @@ void NeuronNetwork::startTrainGA(vector<double> x, vector<double> y)
 			limitsVarLR[i] = 0;
 		}
 		else {
-			limitsVarLR[i] = 15;
+			limitsVarLR[i] = 14;
 		}
 	}
 
 	//Обучение
 	Simple_GA train(error, limitsVarLR, neuronCount * layerCount, "min");
 	train.set_types("Tournament", "TwoPoint", "BestAndOffspring", "Average");
-	train.start(50, 20, 1);
+	train.start(30, 50, 1);
 	//Получение наилучшей найденной комбинации функций для нейронной сети 
 	vector<double> numFunc = train.get_all();
 	setFuncActivation(numFunc);//Установка их и последующее сохранение
@@ -171,10 +172,10 @@ double NeuronNetwork::startTrainDE(vector<double> x, vector<double> y)
 	vector<double> limits((neuronCount * (inCount + 1) + (layerCount - 1) * (neuronCount + 1)*neuronCount+ (neuronCount + 1))*2);
 	for (int i = 0; i < limits.size(); i++) {
 		if (i % 2 == 0) {
-			limits[i] = -10;
+			limits[i] = -50;
 		}
 		else {
-			limits[i] = 10;
+			limits[i] = 50;
 		}
 	}
 

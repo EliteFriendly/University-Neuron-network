@@ -1,8 +1,8 @@
 #include "IndividualDiffEvolution.h"
 
 
-IndividualDiffEvolution::IndividualDiffEvolution(vector <double> limitsDimension, function<double(vector<double>)>func, double acc,string aim) :
-	limitsDimension(limitsDimension), func(func), acc(acc), aim(aim) {
+IndividualDiffEvolution::IndividualDiffEvolution(vector <double> limitsDimension, double acc) :
+	limitsDimension(limitsDimension), acc(acc) {
 	coordinats.resize(limitsDimension.size() / 2);
 	int n;//Хранит количество точек, временна
 
@@ -11,13 +11,12 @@ IndividualDiffEvolution::IndividualDiffEvolution(vector <double> limitsDimension
 		coordinats[i / 2] = (rand() % n)*acc + limitsDimension[i];
 
 	}
-	calcFitness();
 
 }
 
 IndividualDiffEvolution::IndividualDiffEvolution(const IndividualDiffEvolution& copy):
-	limitsDimension(copy.limitsDimension), func(copy.func), 
-	acc(copy.acc),fitness(copy.fitness),coordinats(copy.coordinats),aim(copy.aim){}
+	limitsDimension(copy.limitsDimension), 
+	acc(copy.acc),fitness(copy.fitness),coordinats(copy.coordinats){}
 
 
 
@@ -57,7 +56,6 @@ IndividualDiffEvolution IndividualDiffEvolution::operator+(const IndividualDiffE
 	for (int i = 0; i < copy.coordinats.size(); i++) {
 		copy.coordinats[i] += sec.coordinats[i];
 	}
-	copy.fitness = copy.func(coordinats);
 	return copy;
 }
 
@@ -70,7 +68,6 @@ IndividualDiffEvolution IndividualDiffEvolution::operator -(const IndividualDiff
 	for (int i = 0; i < copy.coordinats.size(); i++) {
 		copy.coordinats[i] = copy.coordinats[i]- sec.coordinats[i];
 	}
-	copy.fitness = copy.func(coordinats);
 	return copy;
 }
 IndividualDiffEvolution IndividualDiffEvolution::operator *(double sec)
@@ -79,6 +76,5 @@ IndividualDiffEvolution IndividualDiffEvolution::operator *(double sec)
 	for (int i = 0; i < copy.coordinats.size(); i++) {
 		copy.coordinats[i] *= sec;
 	}
-	copy.fitness = copy.func(coordinats);
 	return copy;
 }

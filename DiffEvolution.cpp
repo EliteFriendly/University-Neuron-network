@@ -54,8 +54,9 @@ void DiffEvolution::startSearch(double acc, double F, double Cr, int N, int gene
 	arrIndividuals.resize(N);
 	//Генерация первой популяции
 	for (int i = 0; i < N; i++) {
-		IndividualDiffEvolution ind(limitsDimension, func, acc, aim);
+		IndividualDiffEvolution ind(limitsDimension, acc);
 		arrIndividuals[i] = ind;
+		arrIndividuals[i].calcFitness(func,aim);
 	}
 	saveBest();
 
@@ -66,6 +67,7 @@ void DiffEvolution::startSearch(double acc, double F, double Cr, int N, int gene
 		for (int j = 0; j < N; j++) {
 			newInd = mutation.getDonor(arrIndividuals,best);
 			newInd = crossover(newInd);
+			newInd.calcFitness(func,aim);
 			surviveCrossover(newInd);
 		}
 		saveBest();

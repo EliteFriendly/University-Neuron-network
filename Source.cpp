@@ -16,6 +16,7 @@ double func(double x) {
 
 void main() {
 
+	setlocale(0, "");
 	srand(10);
 	//Формирование выборки для обучения
 	int ammount = 100;//Количество точен
@@ -46,7 +47,7 @@ void main() {
 	//Начало
 	vector<double> xOne(1);
 	
-	NeuronNetwork proba(4, 4, 1);
+	NeuronNetwork proba(3, 3, 1);
 	//proba.startTrainDE(xTrain, yTrain);
 	proba.startTrainGA(xTrain, yTrain);
 	for (int i = 0; i < 25; i++) {
