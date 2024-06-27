@@ -114,26 +114,59 @@ void NeuronNetwork::startTrainGA(vector<double> x, vector<double> y)
 	//Обучение
 	Simple_GA train(error, limitsVarLR, neuronCount * layerCount, "min");
 	train.set_types("Tournament", "TwoPoint", "BestAndOffspring", "Average");
-	train.start(30, 50, 1);
+	//train.start(10, 3, 1);
+	train.start(30, 30, 1);
 	//Получение наилучшей найденной комбинации функций для нейронной сети 
-	vector<double> numFunc = train.get_all();
+	vector<double> numFunc = train.getCoordinates();
 	setFuncActivation(numFunc);//Установка их и последующее сохранение
-	ofstream file("Settings.txt");
-	for (int i = 0; i < numFunc.size(); i++) {
-		file << numFunc[i] << " ";
+	bestFuncCombo = numFunc;
+	
+	changeW(bestCombination);
+	double t = getError(bestCombination, x, y);
+	
+
+}
+
+void NeuronNetwork::changeFromFile(string nameFile)
+{
+
+	if (nameFile.find('.') != 1) {
+		nameFile = string(nameFile + ".txt");
 	}
-	file << endl;
-	startTrainDE(x, y);
-	//Получение всех весовых коэффициентов в файл
-	for (int i = 0; i < layerCount; i++) {
-		for (int j = 0; j < neuronCount; j++) {
-			for (int w = 0; w < grid[i][j].getW().size(); w++) {
-				file << grid[i][j].getW()[w] << ' ';
-			}
+	ifstream file;
+	file.open(nameFile);
+	if (file.is_open()) {
+		vector<double> arrayFuncActivation(layerCount * neuronCount);
+		for (int i = 0; i < layerCount * neuronCount; i++) {
+			file >> arrayFuncActivation[i];
 		}
+		setFuncActivation(arrayFuncActivation);
+		vector<double> arrayW((neuronCount * (inCount + 1) + (layerCount - 1) * (neuronCount + 1) * neuronCount + (neuronCount + 1)));
+		for (int i = 0; i < arrayW.size(); i++) {
+			file >> arrayW[i];
+		}
+		changeW(arrayW);
+	}
+	else {
+		cout << "Файл не найден";
+		exit(0);
 	}
 
 
+
+
+}
+
+double NeuronNetwork::getError(vector<double> x, vector<double> y)
+{
+	double sum = 0;//Среднеквадратичная ошибка
+	vector<double> onlyX(1);//Сделано для того чтобы получить значение из getValue
+	for (int i = 0; i < x.size(); i++) {
+		onlyX[0] = x[i];
+		sum += pow(getValue(onlyX) - y[i], 2);
+	}
+	sum = pow(sum/ y.size(), 0.5);
+	return sum;
 }
 
 NeuronNetwork::NeuronNetwork(int neuronCount, int layerCount, int inCount):layerCount(layerCount), neuronCount(neuronCount), inCount(inCount)
@@ -164,6 +197,33 @@ NeuronNetwork::NeuronNetwork(int neuronCount, int layerCount, int inCount):layer
 
 }
 
+void NeuronNetwork::saveSettings(string fileName)
+{
+
+	if (fileName.find('.') != 1) {
+		fileName = string(fileName + ".txt");
+	}
+
+
+	ofstream file(fileName);
+	for (int i = 0; i < bestFuncCombo.size(); i++) {
+		file << int(bestFuncCombo[i]) << " ";
+	}
+	file << endl;
+	//Получение всех весовых коэффициентов в файл
+	for (int i = 0; i < layerCount; i++) {
+		for (int j = 0; j < neuronCount; j++) {
+			for (int w = 0; w < grid[i][j].getW().size(); w++) {
+				file << grid[i][j].getW()[w] << ' ';
+			}
+		}
+	}
+	for (int i = 0; i < outCoef.size(); i++) {
+		file << outCoef[i] << ' ';
+	}
+	file.close();
+}
+
 double NeuronNetwork::startTrainDE(vector<double> x, vector<double> y)
 {
 	function<double(vector<double>)> error = [&](vector<double> w) {return getError(w, x, y); };
@@ -172,16 +232,23 @@ double NeuronNetwork::startTrainDE(vector<double> x, vector<double> y)
 	vector<double> limits((neuronCount * (inCount + 1) + (layerCount - 1) * (neuronCount + 1)*neuronCount+ (neuronCount + 1))*2);
 	for (int i = 0; i < limits.size(); i++) {
 		if (i % 2 == 0) {
-			limits[i] = -50;
+			limits[i] = -10;
 		}
 		else {
-			limits[i] = 50;
+			limits[i] = 10;
 		}
 	}
 
 	DiffEvolution train(error, limits, "best1", "min");
-	train.startSearch(0.01, 0.5, 0.5, 30, 50);
+	train.startSearch(0.01, 0.5, 0.5, 50, 50);
 	changeW(train.getBestCoordinates());
+	if (train.getError() < errorCombination) {
+		errorCombination = train.getError();
+		bestCombination = train.getBestCoordinates();
+	}
+
+	/*cout << train.getError();
+	cout << endl;*/
 	return train.getError();//Возвращает ошибку для работы ГА
 }
 

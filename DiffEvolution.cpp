@@ -64,7 +64,13 @@ void DiffEvolution::startSearch(double acc, double F, double Cr, int N, int gene
 	IndividualDiffEvolution newInd;
 	for (int i = 0; i < generations; i++)
 	{
+		/*if (i == 18) {
+			cout << "Начало осмотра:" << endl;
+		}*/
 		for (int j = 0; j < N; j++) {
+			/*if (j == 9) {
+				cout << endl;
+			}*/
 			newInd = mutation.getDonor(arrIndividuals,best);
 			newInd = crossover(newInd);
 			newInd.calcFitness(func,aim);

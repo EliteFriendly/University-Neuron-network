@@ -51,5 +51,8 @@ public:
 		return best.get_all(accuracy);
 		
 	}
+	vector<double> getCoordinates() {
+		return best.get_point();
+	}
 };
 

@@ -5,6 +5,11 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Neuron_network", "Neuron_network.vcxproj", "{E43EF17B-CE9A-46C5-A743-103FBA70B451}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{A6BB5FF0-0981-4728-A7D2-BFC44B9307E3}"
+	ProjectSection(SolutionItems) = preProject
+		GeneratePoints.h = GeneratePoints.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

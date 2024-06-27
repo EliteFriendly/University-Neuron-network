@@ -42,6 +42,6 @@ public:
 	vector<double> getBestCoordinates() {
 		return best.getCoordinats();
 	}
-	double getError() { return best.getFitness(); }
+	double getError() { return best.getError(); }
 };
 

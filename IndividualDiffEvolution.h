@@ -11,7 +11,7 @@ private:
 	vector <double> limitsDimension;//Ограничение на каждую ось
 	double acc;//Точность поиска точки
 	double fitness;//Значение пригодности
-	
+	double error;//Ошибка
 	
 
 public:
@@ -24,16 +24,18 @@ public:
 	}
 	void calcFitness(function<double(vector<double>)>func ,string aim) {
 		if (aim == "max") {
-			fitness = func(coordinats);
+			error = func(coordinats);
+			fitness = error;
 		}
 		if (aim == "min") {
-			fitness = 1 / (func(coordinats) + 1);
+			error = func(coordinats);
+			fitness = 1 / (error + 1);
 		}
 	}
 	double getFitness() {return fitness;}
 	vector<double> getCoordinats() { return coordinats; }
 
-
+	double getError() { return error; }
 
 
 

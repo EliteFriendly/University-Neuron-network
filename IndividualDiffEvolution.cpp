@@ -16,7 +16,7 @@ IndividualDiffEvolution::IndividualDiffEvolution(vector <double> limitsDimension
 
 IndividualDiffEvolution::IndividualDiffEvolution(const IndividualDiffEvolution& copy):
 	limitsDimension(copy.limitsDimension), 
-	acc(copy.acc),fitness(copy.fitness),coordinats(copy.coordinats){}
+	acc(copy.acc),fitness(copy.fitness),error(copy.error),coordinats(copy.coordinats){}
 
 
 

@@ -22,12 +22,20 @@ private:
 	vector<double> matrixMulti(vector<Neuron>, vector<double>);
 	double funcActivation(double);
 	double getError(vector<double> w, vector<double> x, vector<double> y);
-	void setFuncActivation(vector<double>);
 	
-public:
-	double startTrainDE(vector<double> x, vector<double> y);
-	NeuronNetwork(int layerCount, int neuronCount,int inCount);
+	
+	double errorCombination = 9999999;//Ошибка для сохранения комбинации
+	vector<double> bestCombination;//Наилучшие значения для весовых коэффициентов
+	vector<double> bestFuncCombo;//Наилучшие значения для функций активации
+	void setFuncActivation(vector<double>);
 	void changeW(vector<double> w);
+	double startTrainDE(vector<double> x, vector<double> y);
+
+public:
+	void changeFromFile(string nameFile);
+	double getError(vector<double> x, vector<double> y);
+	NeuronNetwork(int layerCount, int neuronCount,int inCount);
+	void saveSettings(string fileName);
 	void startTrainGA(vector<double> x, vector<double> y);
 	double getValue(vector<double>);
 	
