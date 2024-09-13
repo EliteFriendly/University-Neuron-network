@@ -33,7 +33,7 @@ public:
 		vector<double> arrWithNoise = vectorY;
 		int ammount = vectorY.size();
 		for (int i = 0; i < ammount; i++) {
-			if (rand()%1) {
+			if (rand()%2) {
 				arrWithNoise[i] = arrWithNoise[i] + double(rand() % power + rand() % 1)/100.0 * arrWithNoise[i];
 			}
 			else {

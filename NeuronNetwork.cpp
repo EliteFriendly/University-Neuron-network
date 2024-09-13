@@ -232,15 +232,15 @@ double NeuronNetwork::startTrainDE(vector<double> x, vector<double> y)
 	vector<double> limits((neuronCount * (inCount + 1) + (layerCount - 1) * (neuronCount + 1)*neuronCount+ (neuronCount + 1))*2);
 	for (int i = 0; i < limits.size(); i++) {
 		if (i % 2 == 0) {
-			limits[i] = -10;
+			limits[i] = -20;
 		}
 		else {
-			limits[i] = 10;
+			limits[i] = 20;
 		}
 	}
 
 	DiffEvolution train(error, limits, "best1", "min");
-	train.startSearch(0.01, 0.5, 0.5, 50, 50);
+	train.startSearch(0.01, 0.5, 0.5, 60, 60);
 	changeW(train.getBestCoordinates());
 	if (train.getError() < errorCombination) {
 		errorCombination = train.getError();
